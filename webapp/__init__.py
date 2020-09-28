@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_login import LoginManager
 from webapp.config import SECRET_KEY, WTF_CSRF_TIME_LIMIT
 from flask_wtf.csrf import CSRFProtect
@@ -30,6 +30,10 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(user_id)
+
+    @app.route('/')
+    def index():
+        return redirect(url_for('picture.pictures'))
 
     if __name__ == '__main__':
         app.run(debug=True)
