@@ -9,4 +9,4 @@ blueprint = Blueprint('comment', __name__, url_prefix='/comment')
 def comment():
     title = 'Comment'
     comment_form = CommentsForm()
-    return render_template('comment/comment.html', page_title=title, form=comment_form)
+    return render_template('picture/picture.html', page_title=title, comment_form=comment_form)

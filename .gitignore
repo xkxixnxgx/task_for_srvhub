@@ -1,6 +1,7 @@
 .python-version
 webapp/config.py
 __pycache__/
+.idea
 create_db.py
 create_picture.py
 create_user.py

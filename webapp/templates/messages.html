@@ -5,14 +5,22 @@
     <title>Title</title>
 </head>
 <body>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <div class="alert alert-warning" role="alert">
-                {% for message in messages %}
-                    {{ message }}<br>
-                {% endfor %}
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="alert alert-warning" role="alert">
+                        {% for message in messages %}
+                            {{ message }}<br>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                {% endwith %}
             </div>
-            {% endif %}
-        {% endwith %}
+            <div class="col"></div>
+        </div>
+    </div>
 </body>
 </html>

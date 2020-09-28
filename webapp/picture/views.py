@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, url_for, flash, redirect, request
 from webapp import db
 from webapp.picture.models import Picture
+from webapp.comment.models import Comment
 from webapp.picture.forms import PicturesForm
 from flask_login import current_user
 
@@ -16,13 +17,15 @@ def pictures():
     if current_user.is_authenticated:
         title = "Pictures"
         form = Picture.query.filter(Picture.user_id == current_user.id)
-        return render_template('picture/picture.html', page_title=title, form=form)
+        comment_form = Comment.query.filter(Comment.picture_id == Picture.id)
+        # comment_form = Picture.comments(Picture.id)
+        return render_template('picture/picture.html', page_title=title, form=form, comment_form=comment_form)
     else:
         flash('Вы не вошли как пользователь. Пожалуйста залогиньтесь.', 'warning')
         return redirect(url_for('user.login'))
 
 
-@blueprint.route('/picture_add', methods=['POST'])
+@blueprint.route('/picture_add', methods=['GET', 'POST'])
 def picture_add():
     if current_user.is_authenticated:
         title = "Picture_add"
