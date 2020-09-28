@@ -3,9 +3,27 @@
 {% extends "base.html" %}
 <head>
     <meta charset="UTF-8">
-    <title>Pictures</title>
+    <title>{{ page_title }}</title>
 </head>
 <body>
-Pictures
+{% block content %}
+    <p class="text-secondary">Пользователь: {{ current_user.username }}</p>
+    <div class="row-1">
+        Мои изображения.
+    </div>
+    <br>
+    {% for picture in form %}
+        <figure class="figure">
+          <img src="{{ picture.url }}" class="figure-img img-fluid rounded" alt="Ошибка загрузки изображения {{ picture.url }}.">
+          <figcaption class="figure-caption">Название: {{ picture.name }}<br>
+              Дата: {{ picture.date_create }}<br>
+          </figcaption>
+        </figure>
+        <br>
+        <button type="button" class="btn btn-info">Добавить комментарий</button><br>
+        <br>
+    {% endfor %}
+
+{% endblock %}
 </body>
 </html>
