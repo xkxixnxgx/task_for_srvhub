@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField
+from wtforms.validators import DataRequired
 
 
-class CommentsForm(FlaskForm):
-    commit = StringField('Комментарии', render_kw={"class": "btn btn-primary"})
-    submit = SubmitField('Отправить', render_kw={"class": "btn btn-primary"})
+class CommentAddForm(FlaskForm):
+    comment = StringField('Комментарий', validators=[DataRequired()], render_kw={"class": "form-control"})
+    submit = SubmitField('Добавить', render_kw={"class": "btn btn-success"})

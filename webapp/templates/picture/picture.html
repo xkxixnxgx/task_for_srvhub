@@ -31,14 +31,15 @@
                   </figcaption>
                 </figure>
                 <br>
-                <a class="btn btn-info" href="#" role="button">Добавить комментарий</a>
+                <a class="btn btn-info" href="{{ url_for('comment.comment_add') }}/{{ picture.id }}" role="button">Добавить комментарий</a>
                 <br>
                 <br>
                 </div>
                 <div class="col-4">
                     <div class="overflow-auto">
-                        Комментарии<br>
-                        {% for comment in comment_form %}
+                        Комментарии:<br>
+                        {% for comment in picture.comments %}
+                            <br>
                             {{ comment.date_create }}<br>
                             {{ comment.comment }}<br>
                         {% endfor %}

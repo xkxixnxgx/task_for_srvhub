@@ -3,10 +3,8 @@ from webapp import db
 from webapp.picture.models import Picture
 from webapp.comment.models import Comment
 from webapp.picture.forms import PicturesForm
+from webapp.comment.forms import CommentAddForm
 from flask_login import current_user
-
-import requests
-from bs4 import BeautifulSoup
 import os
 
 blueprint = Blueprint('picture', __name__, url_prefix='/picture')
@@ -18,7 +16,6 @@ def pictures():
         title = "Pictures"
         form = Picture.query.filter(Picture.user_id == current_user.id)
         comment_form = Comment.query.filter(Comment.picture_id == Picture.id)
-        # comment_form = Picture.comments(Picture.id)
         return render_template('picture/picture.html', page_title=title, form=form, comment_form=comment_form)
     else:
         flash('Вы не вошли как пользователь. Пожалуйста залогиньтесь.', 'warning')
@@ -49,29 +46,17 @@ def picture_add():
         return redirect(url_for('user.login'))
 
 
-def get_html(url):
-    try:
-        result = requests.get(url)
-        result.raise_for_status()
-        return result.text
-    except(requests.RequestException, ValueError):
-        print('Сетевая ошибка')
-        return False
-
-
-def get_python_news(html):
-    soup = BeautifulSoup(html, 'html.parser')
-    news_list = soup.find('ul', class_='list-recent-posts')
-    print(news_list)
-
-
-def save_picture(file_name):
-    directory_project = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    name = file_name.split('.')[0]
-    url = directory_project + '/static/' + file_name
-    file_exist = Picture.query.filter(Picture.url == url).count()
-    if not file_exist:
-        new_picture = Picture(name=name, url=url)
-        db.session.add(new_picture)
-        db.session.commit()
+@blueprint.route('/load_picture', methods=['GET', 'POST'])
+def load_picture(file_name):
+    if request.method == 'POST':
+        f = request.files['the_file']
+        f.save('/var/www/uploads/uploaded_file.txt')
+        directory_project = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        name = file_name.split('.')[0]
+        url = directory_project + '/static/' + file_name
+        file_exist = Picture.query.filter(Picture.url == url).count()
+        if not file_exist:
+            new_picture = Picture(name=name, url=url)
+            db.session.add(new_picture)
+            db.session.commit()
 
